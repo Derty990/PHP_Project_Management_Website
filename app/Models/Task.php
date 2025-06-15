@@ -24,4 +24,6 @@ class Task extends Model
         // Jedno zadanie "należy do" jednego projektu
         return $this->belongsTo(Project::class);
     }
+
+    public function comments() { return $this->hasMany(Comment::class); }
 }

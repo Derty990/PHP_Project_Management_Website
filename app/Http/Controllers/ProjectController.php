@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,12 +12,24 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        // Pobierz projekty NALEŻĄCE tylko do aktualnie zalogowanego użytkownika
-        $projects = Project::where('user_id', auth()->id())->get();
 
-        // Przekaż pobrane projekty do widoku i go wyświetl
+
+    // w app/Http/Controllers/ProjectController.php
+    public function index(Request $request) // <-- Dodaj Request $request
+    {
+        // Pobieram zapytanie do bazy, ale jeszcze go nie wykonuję
+        $query = Project::where('user_id', auth()->id());
+
+        // Jeśli w adresie URL jest parametr 'search'
+        if ($request->has('search')) {
+            // Dodaję do zapytania warunek wyszukiwania
+            $query->where('name', 'like', '%' . $request->input('search') . '%');
+        }
+
+        // Na końcu wykonuję zapytanie i pobieram wyniki
+        $projects = $query->get();
+
+        // Przekazuję projekty do widoku
         return view('projects.index', compact('projects'));
     }
 
@@ -115,6 +128,49 @@ class ProjectController extends Controller
         // Wracam na listę projektów z komunikatem o sukcesie.
         return redirect()->route('projects.index')
             ->with('success', 'Projekt został pomyślnie usunięty.');
+    }
+
+    public function addMember(Request $request, Project $project)
+    {
+        // Waliduję, czy podany email istnieje w tabeli users
+        $validated = $request->validate([
+            'email' => 'required|email|exists:users,email'
+        ]);
+
+        // Znajduję użytkownika o podanym adresie email
+        $user = User::where('email', $validated['email'])->first();
+
+        // Sprawdzam, czy ten użytkownik nie jest już członkiem projektu
+        if ($project->members->contains($user)) {
+            return back()->withErrors(['email' => 'Ten użytkownik jest już członkiem tego projektu.']);
+        }
+
+        // Dodaję powiązanie w tabeli pośredniczącej (pivot)
+        // Metoda attach() jest przeznaczona specjalnie dla relacji wiele-do-wielu
+        $project->members()->attach($user->id);
+
+        return redirect()->route('projects.show', $project)
+            ->with('success', 'Dodano nowego członka do projektu!');
+    }
+
+    public function removeMember(Project $project, User $user)
+    {
+        // Autoryzacja: tylko właściciel projektu może usuwać członków
+        if (auth()->id() !== $project->user_id) {
+            abort(403);
+        }
+
+        // Nie pozwól właścicielowi usunąć samego siebie z listy członków
+        if ($project->user_id === $user->id) {
+            return back()->withErrors(['email' => 'Nie możesz usunąć właściciela projektu.']);
+        }
+
+        // Usuwam powiązanie w tabeli pośredniczącej (pivot)
+        // Metoda detach() jest przeznaczona specjalnie dla relacji wiele-do-wielu
+        $project->members()->detach($user->id);
+
+        return redirect()->route('projects.show', $project)
+            ->with('success', 'Usunięto członka z projektu.');
     }
 
 

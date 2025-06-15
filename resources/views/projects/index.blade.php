@@ -5,6 +5,13 @@
         </h2>
     </x-slot>
 
+    <form method="GET" action="{{ route('projects.index') }}" class="mb-4">
+        <div class="flex">
+            <x-text-input name="search" class="w-full" placeholder="Szukaj po nazwie projektu..." value="{{ request('search') }}" />
+            <x-primary-button class="ms-2">Szukaj</x-primary-button>
+        </div>
+    </form>
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">

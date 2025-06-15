@@ -16,9 +16,22 @@ class Project extends Model
         'user_id',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function tasks()
     {
         // Jeden projekt "ma wiele" zadań
         return $this->hasMany(Task::class);
+
     }
+
+    public function members()
+    {
+        // Projekt "należy do wielu" użytkowników
+        return $this->belongsToMany(User::class);
+    }
+
 }
