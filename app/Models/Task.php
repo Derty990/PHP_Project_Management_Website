@@ -6,19 +6,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Project extends Model
+class Task extends Model
 {
     use HasFactory, SoftDeletes;
+
     protected $fillable = [
-        'name',
+        'title',
         'description',
         'status',
-        'user_id',
+        'priority',
+        'due_date',
+        'project_id',
     ];
 
-    public function tasks()
+    public function project()
     {
-        // Jeden projekt "ma wiele" zadań
-        return $this->hasMany(Task::class);
+        // Jedno zadanie "należy do" jednego projektu
+        return $this->belongsTo(Project::class);
     }
 }
