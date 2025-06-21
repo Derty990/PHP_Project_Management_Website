@@ -30,31 +30,28 @@ class TaskController extends Controller
 
     public function index(Request $request)
     {
-        // Pobieram obiekt zalogowanego użytkownika raz, dla czystości kodu
         $user = $request->user();
 
-        // Zaczynam budować zapytanie. Chcę projekty, które:
-        // 1. Użytkownik jest właścicielem (user_id zgadza się z ID zalogowanego usera)
-        // LUB
-        // 2. Użytkownik jest członkiem (istnieje powiązanie w tabeli pivot `project_user`)
+        // Chcę zadania, KTÓRE MAJĄ powiązany projekt ('project'), który spełnia warunki...
         $query = Task::whereHas('project', function ($projectQuery) use ($user) {
+            // ...warunki są takie: właścicielem projektu jest zalogowany użytkownik
             $projectQuery->where('user_id', $user->id)
+                // LUB zalogowany użytkownik jest członkiem tego projektu
                 ->orWhereHas('members', function ($memberQuery) use ($user) {
                     $memberQuery->where('user_id', $user->id);
                 });
         });
 
-
         // Jeśli w adresie URL jest parametr 'search'
         if ($request->filled('search')) {
-            // Dodatkowo filtruję po nazwie projektu
-            $query->where('name', 'like', '%' . $request->input('search') . '%');
+            // Filtruję po TYTULE zadania ('title'), a nie po 'name'
+            $query->where('title', 'like', '%' . $request->input('search') . '%');
         }
 
-        // Pobieram posortowane wyniki (najnowsze na górze)
+        // Pobieram posortowane wyniki
         $tasks = $query->with('project')->latest()->get();
 
-        // Przekazuję projekty do widoku
+        // Przekazuję zadania do widoku
         return view('tasks.index', compact('tasks'));
     }
 
