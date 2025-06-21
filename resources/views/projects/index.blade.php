@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl text-white leading-tight">
             {{ __('Moje Projekty') }}
         </h2>
     </x-slot>
@@ -24,6 +24,15 @@
                     <a href="{{ route('projects.create') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700">Dodaj projekt</a>
 
                     <ul class="mt-4 space-y-4">
+                        <form method="GET" action="{{ route('projects.index') }}" class="mb-6">
+                            <div class="flex">
+                                <x-text-input name="search" class="w-full" placeholder="Szukaj po nazwie projektu..." value="{{ request('search') }}" />
+                                <x-primary-button class="ms-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
+                                    <span class="ms-2">Szukaj</span>
+                                </x-primary-button>
+                            </div>
+                        </form>
                         @forelse ($projects as $project)
                             <li class="p-4 border rounded-lg flex justify-between items-center">
                                 <div>

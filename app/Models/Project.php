@@ -25,13 +25,12 @@ class Project extends Model
     {
         // Jeden projekt "ma wiele" zadań
         return $this->hasMany(Task::class);
-
     }
 
     public function members()
     {
-        // Projekt "należy do wielu" użytkowników
-        return $this->belongsToMany(User::class);
+        // Mówie Laravelowi, żeby pobierał nową kolumnę 'role_id'
+        return $this->belongsToMany(User::class)->withPivot('role_id')->withTimestamps();
     }
 
 }

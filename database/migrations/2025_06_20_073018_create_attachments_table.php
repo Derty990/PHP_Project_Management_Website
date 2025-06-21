@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('attachments', function (Blueprint $table) {
             $table->id();
-            $table->text('body');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Kto napisał
-            $table->foreignId('task_id')->constrained()->onDelete('cascade'); // Do jakiego zadania
+            $table->foreignId('task_id')->constrained()->onDelete('cascade');
+            $table->string('original_name'); // Oryginalna nazwa pliku użytkownika
+            $table->string('path'); // Ścieżka, pod którą zapisałem plik na serwerze
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('attachments');
     }
 };

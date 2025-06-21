@@ -25,10 +25,9 @@ class User extends Authenticatable
 
     public function projects()
     {
-        // Użytkownik "należy do wielu" projektów.
-        return $this->belongsToMany(Project::class);
+        // Użytkownik "ma wiele" projektów. To jest kluczowe dla działania create().
+        return $this->hasMany(Project::class);
     }
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -52,5 +51,9 @@ class User extends Authenticatable
         ];
     }
 
-    public function comments() { return $this->hasMany(Comment::class); }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
 }

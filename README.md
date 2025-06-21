@@ -1,61 +1,95 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Projekt: TeamFlow - System Zarządzania Projektami
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 1. Wprowadzenie
 
-## About Laravel
+**TeamFlow** to aplikacja webowa stworzona w oparciu o framework Laravel, przeznaczona do zarządzania projektami i zadaniami.
+System został zaprojektowany z myślą o małych zespołach oraz użytkownikach indywidualnych, 
+aby usprawnić organizację pracy, ułatwić współpracę oraz umożliwić przejrzyste śledzenie postępów w realizacji zadań i całych projektów. 
+Aplikacja demonstruje implementację kluczowych wzorców projektowych, mechanizmów frameworka Laravel oraz dobrych praktyk programistycznych.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 2. Główne Funkcjonalności
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Aplikacja oferuje funkcjonalności, które składają się na kompletne narzędzie do zarządzania projektami.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* **System Uwierzytelniania:**
+    * Bezpieczna rejestracja i logowanie użytkowników z hashowaniem haseł.
+    * System autoryzacji chroniący dostęp do zasobów (z wykorzystaniem Laravel Policies).
 
-## Learning Laravel
+* **Zarządzanie Projektami (CRUD):**
+    * Tworzenie, odczytywanie, aktualizacja i usuwanie (miękkie) projektów.
+    * Każdy projekt ma jednego właściciela.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+* **Zarządzanie Zadaniami (CRUD):**
+    * Tworzenie, odczytywanie, aktualizacja i usuwanie (miękkie) zadań w kontekście konkretnego projektu (relacja jeden-do-wielu).
+    * Możliwość definiowania statusu i priorytetu dla każdego zadania przy użyciu typów wyliczeniowych (Enum).
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+* **Zarządzanie Zespołem i Rolami:**
+    * Implementacja relacji wiele-do-wielu między użytkownikami a projektami.
+    * Możliwość dodawania i usuwania członków zespołu z projektu.
+    * System ról (Właściciel, Edytor, Członek) z uprawnieniami zaimplementowanymi przy użyciu dedykowanej tabeli `roles` i mechanizmu Laravel Policies.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+* **Dodawanie komentarzy do zadań:**
+    * Każdy członek projektu posiada możliwość dodania komentarza do konkretnego zadania oraz usunięcia swoich komentarzy 
+    * Komentarze wyświetlają się wszystkim członkom projektu
 
-## Laravel Sponsors
+* **Obsługa Plików:**
+    * Możliwość przesyłania i dołączania wielu plików (załączników) do konkretnych zadań.
+    * Funkcjonalność podglądu miniatur dla plików graficznych oraz bezpiecznego usuwania załączników.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+* **Funkcje Dodatkowe:**
+    * **Spersonalizowany Dashboard:** Wyświetla podsumowanie kluczowych informacji dla zalogowanego użytkownika (statystyki, ostatnie zadania).
+    * **Wyszukiwanie:** Możliwość przeszukiwania listy projektów oraz zadań (wewnątrz projektu i globalnie).
+    * **Eksportowanie do CSV:** Możliwość eksportowania swoich zadań do pliku CSV wraz z informacjami na temat statusu obecnych zadań
+    * **Reprezentacja wykresowa:** Wyświetlanie ilości zadań podzielonych na konkretne statusy w formie wykresu słupkowego na Dashboard zalogowanego użytkownika
 
-### Premium Partners
+## 3. Użyte Technologie i Narzędzia
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+* **Backend:** PHP 8.x, Laravel 12.x
+* **Frontend:** HTML5, CSS3 (Tailwind CSS), JavaScript (Alpine.js)
+* **Baza Danych:** MySQL
+* **Środowisko deweloperskie:**
+    * Serwer WWW i PHP: Laravel Herd
+    * Klient Bazy Danych: DBeaver
+    * Edytor Kodu: PhpStorm
+    * Menedżer pakietów PHP: Composer
+    * Menedżer pakietów JS i bundler: NPM / Vite
 
-## Contributing
+## 4. Architektura i Baza Danych
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Aplikacja została zbudowana w oparciu o architekturę **Model-View-Controller (MVC)**, co zapewnia separację logiki biznesowej od warstwy prezentacji.
 
-## Code of Conduct
+### Schemat Bazy Danych
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Baza danych składa się z kluczowych tabel, które modelują logikę aplikacji:
 
-## Security Vulnerabilities
+| Nazwa Tabeli | Opis |
+| :--- | :--- |
+| `users` | Przechowuje dane użytkowników i informacje do logowania. |
+| `projects` | Główna tabela projektów, powiązana z właścicielem (`user_id`). |
+| `tasks` | Tabela zadań, powiązana z projektami (`project_id`). |
+| `roles` | Słownikowa tabela ról (np. Właściciel, Edytor). |
+| `project_user` | Tabela pośrednicząca (pivot) dla relacji wiele-do-wielu `projects` i `users`, zawiera `role_id`. |
+| `attachments` | Przechowuje informacje o załącznikach do zadań. |
+| `comments` |  Przechowuje komentarze do zadań. |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 5. Instrukcja Instalacji i Uruchomienia
 
-## License
+1.  Sklonuj repozytorium projektu: `git clone <adres-repozytorium>`
+2.  Przejdź do folderu projektu: `cd teamflow`
+3.  Zainstaluj zależności PHP: `composer install`
+4.  Skopiuj plik `.env.example` do `.env`: `cp .env.example .env`
+5.  Wygeneruj klucz aplikacji: `php artisan key:generate`
+6.  W pliku `.env` skonfiguruj połączenie z bazą danych MySQL (np. używając zmiennej `DB_URL`).
+7.  Uruchom serwer MySQL i stwórz pustą bazę danych o nazwie podanej w `.env`.
+8.  Uruchom migracje i seedery (stworzą tabele i wypełnią tabelę `roles`): `php artisan migrate:fresh --seed`
+9.  Stwórz dowiązanie symboliczne dla przechowywania plików: `php artisan storage:link`
+10. Zainstaluj zależności frontendu: `npm install`
+11. Uruchom serwer deweloperski Vite w osobnym terminalu: `npm run dev`
+12. Skonfiguruj lokalną domenę w Laravel Herd (lub użyj `php artisan serve`).
+13. Aplikacja jest dostępna pod skonfigurowanym adresem (np. `https://teamflow.test`).
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 6. Podsumowanie
+
+Projekt "TeamFlow" jest kompletną aplikacją webową, która realizuje wszystkie założone cele. W trakcie jego tworzenia wykorzystano kluczowe mechanizmy
+frameworka Laravel, takie jak system tras, ORM Eloquent z relacjami, system autentykacji i autoryzacji (Policies), walidację danych, obsługę plików oraz 
+nowoczesne narzędzia front-endowe. Architektura oparta na wzorcu MVC oraz relacyjna baza danych zapewniają skalowalność i łatwość w dalszej rozbudowie systemu.
